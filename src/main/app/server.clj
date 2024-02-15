@@ -18,7 +18,7 @@
                         :parser api-parser})
       (server/wrap-transit-params)
       (server/wrap-transit-response)
-      (wrap-resource "public")
+      (wrap-resource ".")
       wrap-content-type))
 
 (defonce stop-fn (atom nil))

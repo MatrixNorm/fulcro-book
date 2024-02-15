@@ -2,12 +2,12 @@
 
  ;; serves the files from our resources/public directory
  ;; (resources is on our classpath via :paths in deps.edn)
- :dev-http {8000 "classpath:public"}
+ :dev-http {8000 "resources"}
 
  :nrepl {:port 9000}
 
  :builds   {:main {:target     :browser
-                   :output-dir "resources/public/js/main"
+                   :output-dir "resources/js/main"
                    :asset-path "/js/main"
                    ;; index.html is in resources/public
                    :dev        {:compiler-options
@@ -25,4 +25,15 @@
                    :devtools   {:after-load app.client/refresh
                                 ;; hot code reload
                                 :preloads   [com.fulcrologic.fulcro.inspect.preload
-                                             com.fulcrologic.fulcro.inspect.dom-picker-preload]}}}}
+                                             com.fulcrologic.fulcro.inspect.dom-picker-preload]}}
+
+            :another {:target     :browser
+                      :output-dir "resources/js/another"
+                      :asset-path "/js/another"
+                      :dev        {:compiler-options
+                                   {:external-config {:fulcro {:html-source-annotations? true}}}}
+                      :modules    {:main {:init-fn another.client/init
+                                          :entries [another.client]}}
+                      :devtools   {:after-load another.client/refresh
+                                   :preloads   [com.fulcrologic.fulcro.inspect.preload
+                                                com.fulcrologic.fulcro.inspect.dom-picker-preload]}}}}

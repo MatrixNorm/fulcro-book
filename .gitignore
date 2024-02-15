@@ -4,6 +4,6 @@
 .calva/
 .lsp/
 node_modules/
-resources/public/js/
+resources/js/
 
 
