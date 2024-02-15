@@ -1,0 +1,28 @@
+{:deps     {:aliases [:dev]}
+
+ ;; serves the files from our resources/public directory
+ ;; (resources is on our classpath via :paths in deps.edn)
+ :dev-http {8000 "classpath:public"}
+
+ :nrepl {:port 9000}
+
+ :builds   {:main {:target     :browser
+                   :output-dir "resources/public/js/main"
+                   :asset-path "/js/main"
+                   ;; index.html is in resources/public
+                   :dev        {:compiler-options
+                                {:external-config {:fulcro {:html-source-annotations? true}}}}
+                   ;; The :modules section of the config is always a map keyed by module ID. 
+                   ;; The module ID is also used to generate the Javascript filename. 
+                   ;; Module :main will generate main.js in :output-dir.
+                   :modules    {:main {:init-fn app.client/init
+                                       ;; Fully qualified symbol pointing to a function that 
+                                       ;; should be called when the module is loaded initially.
+                                       :entries [app.client]
+                                       ;;The namespaces that serve as the root nodes of the 
+                                       ;;dependency graph for the output code of this module
+                                       }}
+                   :devtools   {:after-load app.client/refresh
+                                ;; hot code reload
+                                :preloads   [com.fulcrologic.fulcro.inspect.preload
+                                             com.fulcrologic.fulcro.inspect.dom-picker-preload]}}}}
