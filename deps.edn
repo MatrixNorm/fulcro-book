@@ -1,5 +1,8 @@
-{;:paths   ["src/step1_starting" "resources"]
- :paths   ["src/step2_remote" "resources"]
+{;:paths   ["src/step0_starting" "resources"]
+ ;:paths   ["src/step1_data" "resources"]
+ ;:paths   ["src/step1A_initial_state" "resources"]
+ :paths   ["src/step1B_queries" "resources"]
+ ;:paths   ["src/step2_remote" "resources"]
 
  :deps    {org.clojure/clojure    {:mvn/version "1.11.1"}
            com.fulcrologic/fulcro {:mvn/version "3.6.10"}
