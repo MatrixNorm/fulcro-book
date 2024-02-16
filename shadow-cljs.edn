@@ -7,9 +7,10 @@
  :nrepl {:port 9000}
 
  :builds   {:main {:target     :browser
+                   ;; предполагается что index.html лежит в папке resources
                    :output-dir "resources/js/main"
                    :asset-path "/js/main"
-                   ;; index.html is in resources/public
+
                    :dev        {:compiler-options
                                 {:external-config {:fulcro {:html-source-annotations? true}}}}
                    ;; The :modules section of the config is always a map keyed by module ID. 
@@ -25,15 +26,4 @@
                    :devtools   {:after-load app.client/refresh
                                 ;; hot code reload
                                 :preloads   [com.fulcrologic.fulcro.inspect.preload
-                                             com.fulcrologic.fulcro.inspect.dom-picker-preload]}}
-
-            :another {:target     :browser
-                      :output-dir "resources/js/another"
-                      :asset-path "/js/another"
-                      :dev        {:compiler-options
-                                   {:external-config {:fulcro {:html-source-annotations? true}}}}
-                      :modules    {:main {:init-fn another.client/init
-                                          :entries [another.client]}}
-                      :devtools   {:after-load another.client/refresh
-                                   :preloads   [com.fulcrologic.fulcro.inspect.preload
-                                                com.fulcrologic.fulcro.inspect.dom-picker-preload]}}}}
+                                             com.fulcrologic.fulcro.inspect.dom-picker-preload]}}}}
