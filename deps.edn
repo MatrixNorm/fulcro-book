@@ -3,8 +3,8 @@
  ;:paths   ["src/step1A_initial_state" "resources"]
  ;:paths   ["src/step1B_queries" "resources"]
  ;:paths   ["src/step1C_updates" "resources"]
- :paths   ["src/step1D_db_normalization" "resources"]
- ;:paths   ["src/step2_remote" "resources"]
+ ;:paths   ["src/step1D_db_normalization" "resources"]
+ :paths   ["src/step2_remote" "resources"]
 
  :deps    {org.clojure/clojure    {:mvn/version "1.11.1"}
            com.fulcrologic/fulcro {:mvn/version "3.6.10"}
@@ -13,7 +13,7 @@
            ring/ring-core         {:mvn/version "1.11.0"}
            http-kit/http-kit      {:mvn/version "2.7.0"}}
 
- :aliases {:dev {:extra-paths ["src/dev"]
+ :aliases {:dev {:extra-paths ["dev"]
                  :extra-deps  {org.clojure/clojurescript   {:mvn/version "1.11.121"}
                                thheller/shadow-cljs        {:mvn/version "2.26.4"}
                                binaryage/devtools          {:mvn/version  "1.0.7"}

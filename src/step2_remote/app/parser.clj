@@ -8,10 +8,10 @@
 (def resolvers [app.resolvers/resolvers])
 
 (def pathom-parser
-  (p/parser {::p/env     {::p/reader                 [p/map-reader
-                                                      pc/reader2
-                                                      pc/ident-reader
-                                                      pc/index-reader]
+  (p/parser {::p/env     {::p/reader [p/map-reader
+                                      pc/reader2
+                                      pc/ident-reader
+                                      pc/index-reader]
                           ::pc/mutation-join-globals [:tempids]}
              ::p/mutate  pc/mutate
              ::p/plugins [(pc/connect-plugin {::pc/register resolvers})
@@ -22,10 +22,3 @@
 (defn api-parser [query]
   (log/info "Process" query)
   (pathom-parser {} query))
-
-(comment
-  (api-parser [{[:person/id 1] [:person/name]}])
-
-  (api-parser [{[:list/id :friends] [:list/id {:list/people [:person/name]}]}])
-  
-  (api-parser [{:friends [:list/id {:list/people [:person/name]}]}]))

@@ -1,6 +1,5 @@
 (ns app.resolvers
   (:require
-   [com.wsscode.pathom.core :as p]
    [com.wsscode.pathom.connect :as pc]))
 
 (def people-table
@@ -41,3 +40,28 @@
   {:enemies {:list/id :enemies}})
 
 (def resolvers [person-resolver list-resolver friends-resolver enemies-resolver])
+
+
+(comment
+  (app.parser/api-parser 
+   [{[:person/id 1] 
+     [:person/name]}])
+  
+  (app.parser/api-parser 
+   [{[:list/id :friends] 
+     [:list/id]}])
+  
+  (app.parser/api-parser
+   [{[:list/id :friends] 
+     [:list/id :list/label]}])
+  
+  (app.parser/api-parser
+   [{[:list/id :friends] 
+     [:list/id :list/label :list/people]}])
+  
+  (app.parser/api-parser 
+   [{[:list/id :friends] 
+     [:list/id {:list/people [:person/name]}]}])
+  
+  (app.parser/api-parser 
+   [{:friends [:list/id {:list/people [:person/name]}]}]))

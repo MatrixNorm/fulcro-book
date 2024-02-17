@@ -2,7 +2,7 @@
   (:require
    [app.parser :refer [api-parser]]
    [org.httpkit.server :as http]
-   [com.fulcrologic.fulcro.server.api-middleware :as server]
+   [com.fulcrologic.fulcro.server.api-middleware :as fulcro]
    [ring.middleware.content-type :refer [wrap-content-type]]
    [ring.middleware.resource :refer [wrap-resource]]))
 
@@ -14,10 +14,10 @@
 
 (def middleware
   (-> not-found-handler
-      (server/wrap-api {:uri    "/api"
+      (fulcro/wrap-api {:uri    "/api"
                         :parser api-parser})
-      (server/wrap-transit-params)
-      (server/wrap-transit-response)
+      (fulcro/wrap-transit-params)
+      (fulcro/wrap-transit-response)
       (wrap-resource ".")
       wrap-content-type))
 

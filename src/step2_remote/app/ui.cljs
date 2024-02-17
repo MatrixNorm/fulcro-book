@@ -5,7 +5,7 @@
    [app.mutations :as api]))
 
 (defsc Person [this
-               {:person/keys [id name age] :as props}
+               {:person/keys [id name age]}
                {:keys [onDelete]}]
   {:query [:person/id :person/name :person/age]
    :ident :person/id}
@@ -16,22 +16,19 @@
 (def ui-person (comp/factory Person {:keyfn :person/id}))
 
 
-(defsc PersonList [this
-                   {:list/keys [id label people] :as props}]
+(defsc PersonList [this {:list/keys [id label people]}]
   {:query [:list/id :list/label {:list/people (comp/get-query Person)}]
    :ident :list/id}
 
   (let [delete-person-cb
-        (fn [person-id] (comp/transact!
-                         this
-                         [(api/delete-person
-                           {:list/id id :person/id person-id})]))]
+        (fn [person-id] (comp/transact! this
+                                        [(api/delete-person
+                                          {:list/id id :person/id person-id})]))
+        person-fn (fn [person] (ui-person (comp/computed person  {:onDelete delete-person-cb})))]
 
     (dom/div
      (dom/ul
-      (map
-       (fn [p] (ui-person (comp/computed p {:onDelete delete-person-cb})))
-       people)))))
+      (map person-fn people)))))
 
 (def ui-person-list (comp/factory PersonList))
 
