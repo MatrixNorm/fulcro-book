@@ -13,7 +13,6 @@
 
 (def ui-person (comp/factory Person {:keyfn :person/name}))
 
-
 (defsc PersonList [this {:list/keys [label people]}]
   {:query [:list/label {:list/people (comp/get-query Person)}]
    :initial-state
@@ -23,16 +22,17 @@
                      [(comp/get-initial-state Person {:name "Sally" :age 32})
                       (comp/get-initial-state Person {:name "Brandon" :age 81})]
                      [(comp/get-initial-state Person {:name "Fred" :age 11})
-                      (comp/get-initial-state Person {:name "Bobby" :age 55})])})}
+                      (comp/get-initial-state Person {:name "Donald" :age 79})])})}
 
   (let [delete-person-cb (fn [name] (println label "asked to delete" name))
-        person-fn (fn [person] (ui-person (comp/computed person {:onDelete delete-person-cb})))]
+        make-person-elem
+        (fn [person] (ui-person (comp/computed person
+                                               {:onDelete delete-person-cb})))]
     (dom/div
      (dom/h4 label)
-     (dom/ul (map person-fn people)))))
+     (dom/ul (map make-person-elem people)))))
 
 (def ui-person-list (comp/factory PersonList))
-
 
 (defsc Root [this {:keys [friends enemies]}]
   {:query [{:friends (comp/get-query PersonList)}

@@ -31,13 +31,14 @@
 
   (let [delete-person-cb
         (fn [person-id] (comp/transact! this
-                                        [(api/delete-person {:list/id id :person/id person-id})]))
-        person-fn
+                                        [(api/delete-person {:list/id id 
+                                                             :person/id person-id})]))
+        make-person-elem
         (fn [person] (ui-person (comp/computed person
                                                {:onDelete delete-person-cb})))]
     (dom/div
      (dom/h4 label)
-     (dom/ul (map person-fn people)))))
+     (dom/ul (map make-person-elem people)))))
 
 (def ui-person-list (comp/factory PersonList))
 
@@ -52,25 +53,20 @@
    (ui-person-list friends)
    (ui-person-list enemies)))
 
-;; The mutation code is tied to the shape of the UI tree!!!
-;; This breaks our lovely model in several ways:
-;; 1. We can’t refactor our UI without also rewriting the mutations 
-;;    (since the data tree would change shape)
-;; 2. We can’t locally reason about any data. 
-;;    Our mutations have to understand things globally!
-;; 3. Our mutations could get rather large and ugly as our UI gets big
-;; 4. If a fact appears in more than one place in the UI and data
-;;    tree, then we’ll have to update all of them in order for
-;;    things to be correct. Data duplication is never your friend.
-
 (comment
-  (def state (com.fulcrologic.fulcro.application/current-state
-              app.application/APP))
-  (def query (com.fulcrologic.fulcro.components/get-query 
-              app.ui/Root))
-   (com.fulcrologic.fulcro.algorithms.denormalize/db->tree query state state)
+  (-> app.ui/PersonList
+      comp/get-query
+      meta)
+  ;;
   )
 
-(comment
-  (meta (comp/get-query PersonList))
-  )
+;; * An initial app state sets up a tree of data 
+;;   for startup to match the UI tree.
+;; * Component query and ident are used to normalize 
+;;   this initial data into the database.
+;; * The query is used to pull data from the 
+;;   normalized db into the props of the active Root UI.
+;; * Transactions invoke abstract mutations.
+;;     * Mutations modify the (normalized) db.
+;;     * Fulcro and React manage the UI to do a minimal refresh.
+

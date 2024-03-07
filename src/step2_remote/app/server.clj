@@ -7,7 +7,7 @@
    [ring.middleware.resource :refer [wrap-resource]]))
 
 (def ^:private not-found-handler
-  (fn [req]
+  (fn [_]
     {:status  404
      :headers {"Content-Type" "text/plain"}
      :body    "Not Found"}))
@@ -23,10 +23,10 @@
 
 (defonce stop-fn (atom nil))
 
-(defn start []
+(defn ^:export start []
   (reset! stop-fn (http/run-server middleware {:port 3000})))
 
-(defn stop []
+(defn ^:export stop []
   (when @stop-fn
     (@stop-fn)
     (reset! stop-fn nil)))

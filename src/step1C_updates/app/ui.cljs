@@ -14,7 +14,6 @@
 
 (def ui-person (comp/factory Person {:keyfn :person/name}))
 
-
 (defsc PersonList [this {:list/keys [label people]}]
   {:query [:list/label {:list/people (comp/get-query Person)}]
    :initial-state
@@ -28,16 +27,16 @@
 
   (let [delete-person-cb 
         (fn [name] (comp/transact! this 
-                                   [(api/delete-person {:list-name label :name name})]))
-        person-fn 
+                                   [(api/delete-person {:list-name label 
+                                                        :name name})]))
+        make-person-elem 
         (fn [person] (ui-person (comp/computed person 
                                                {:onDelete delete-person-cb})))]
     (dom/div
      (dom/h4 label)
-     (dom/ul (map person-fn people)))))
+     (dom/ul (map make-person-elem people)))))
 
 (def ui-person-list (comp/factory PersonList))
-
 
 (defsc Root [this {:keys [friends enemies]}]
   {:query [{:friends (comp/get-query PersonList)}
@@ -48,14 +47,3 @@
   (dom/div
    (ui-person-list friends)
    (ui-person-list enemies)))
-
-;; The mutation code is tied to the shape of the UI tree!!!
-;; This breaks our lovely model in several ways:
-;; 1. We can’t refactor our UI without also rewriting the mutations 
-;;    (since the data tree would change shape)
-;; 2. We can’t locally reason about any data. 
-;;    Our mutations have to understand things globally!
-;; 3. Our mutations could get rather large and ugly as our UI gets big
-;; 4. If a fact appears in more than one place in the UI and data
-;;    tree, then we’ll have to update all of them in order for
-;;    things to be correct. Data duplication is never your friend.

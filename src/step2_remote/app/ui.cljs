@@ -15,23 +15,22 @@
 
 (def ui-person (comp/factory Person {:keyfn :person/id}))
 
-
-(defsc PersonList [this {:list/keys [id label people]}]
-  {:query [:list/id :list/label {:list/people (comp/get-query Person)}]
+(defsc PersonList [this {:list/keys [id people]}]
+  {:query [:list/id {:list/people (comp/get-query Person)}]
    :ident :list/id}
 
   (let [delete-person-cb
-        (fn [person-id] (comp/transact! this
-                                        [(api/delete-person
-                                          {:list/id id :person/id person-id})]))
-        person-fn (fn [person] (ui-person (comp/computed person  {:onDelete delete-person-cb})))]
-
+        (fn [person-id] (comp/transact! this [(api/delete-person
+                                               {:list/id id
+                                                :person/id person-id})]))
+        person->react-elem
+        (fn [person] (ui-person (comp/computed person
+                                               {:onDelete delete-person-cb})))]
     (dom/div
      (dom/ul
-      (map person-fn people)))))
+      (map person->react-elem people)))))
 
 (def ui-person-list (comp/factory PersonList))
-
 
 (defsc Root [this {:keys [friends enemies]}]
   {:query         [{:friends (comp/get-query PersonList)}

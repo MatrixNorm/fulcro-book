@@ -31,6 +31,15 @@
     (assoc list
            :list/people (mapv (fn [id] {:person/id id}) (:list/people list)))))
 
+(comment
+  (when-let [x false] "two more weeks")
+  (when-let [x 2] [x :brandon])
+  (let [list (get list-table :friends)]
+    (assoc list
+           :list/people (mapv (fn [id] {:person/id id}) (:list/people list))))
+  ;;
+  )
+
 (pc/defresolver friends-resolver [env input]
   {::pc/output [{:friends [:list/id]}]}
   {:friends {:list/id :friends}})
@@ -39,29 +48,32 @@
   {::pc/output [{:enemies [:list/id]}]}
   {:enemies {:list/id :enemies}})
 
-(def resolvers [person-resolver list-resolver friends-resolver enemies-resolver])
+(def resolvers [enemies-resolver
+                friends-resolver
+                list-resolver
+                person-resolver])
 
 
 (comment
-  (app.parser/api-parser 
-   [{[:person/id 1] 
-     [:person/name]}])
-  
-  (app.parser/api-parser 
-   [{[:list/id :friends] 
-     [:list/id]}])
-  
+  (app.parser/api-parser [{[:person/id 1]
+                           [:person/name]}])
+
+  (app.parser/api-parser [{[:list/id :friends]
+                           [:list/id]}])
+
+  (app.parser/api-parser [{[:list/id :friends]
+                           [:list/id :list/label]}])
+
   (app.parser/api-parser
-   [{[:list/id :friends] 
-     [:list/id :list/label]}])
-  
-  (app.parser/api-parser
-   [{[:list/id :friends] 
+   [{[:list/id :friends]
      [:list/id :list/label :list/people]}])
-  
-  (app.parser/api-parser 
-   [{[:list/id :friends] 
+
+  (app.parser/api-parser
+   [{[:list/id :friends]
      [:list/id {:list/people [:person/name]}]}])
-  
-  (app.parser/api-parser 
-   [{:friends [:list/id {:list/people [:person/name]}]}]))
+
+  (app.parser/api-parser
+   [{:friends 
+     [:list/id {:list/people [:person/name]}]}])
+  ;;
+  )

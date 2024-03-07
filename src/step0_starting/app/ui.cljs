@@ -13,3 +13,9 @@
 (defsc Root [this props]
   (dom/div
    (ui-person {:person/name "Brandon" :person/age 81})))
+
+
+(comment
+  (dom/p "Age: " 80)  
+  ;;
+  )

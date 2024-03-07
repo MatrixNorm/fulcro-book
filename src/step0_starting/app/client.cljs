@@ -11,7 +11,7 @@
    See shadow-cljs.edn `:init-fn` in the modules of the main build."
   []
   (app/mount! APP ui/Root "app")
-  (js/console.log "Loaded"))
+  (js/console.log "Loaded initially"))
 
 (defn ^:export refresh
   "During development, shadow-cljs will call this on every hot 

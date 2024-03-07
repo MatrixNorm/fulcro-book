@@ -9,7 +9,7 @@
   (dom/li
    (dom/h5 (str name " (age: " age ")"))))
 
-(def ui-person (comp/factory Person))
+(def ui-person (comp/factory Person {:keyfn :person/name}))
 
 
 (defsc PersonList [this {:list/keys [label people]}]
@@ -39,11 +39,20 @@
 
 
 (comment
-  (def initial-state 
+  (def init-state
     (comp/get-initial-state app.ui/Root {}))
-  
-  (com.fulcrologic.fulcro.application/current-state app.application/APP)
 
-  (com.fulcrologic.fulcro.algorithms.denormalize/db->tree 
-   [{:friends [:list/label]}] initial-state {})
+  (def app-state
+    (com.fulcrologic.fulcro.application/current-state app.application/APP))
+  
+  (= init-state (select-keys app-state [:friends :enemies]))
+
+  ;; function fdn/db→tree can take an application state and run a query against it
+  (com.fulcrologic.fulcro.algorithms.denormalize/db->tree
+   [{:friends [:list/label]}] 
+   init-state {})
+  (com.fulcrologic.fulcro.algorithms.denormalize/db->tree
+   [{:leader [:name :age]}]
+   {:leader {:name "Brandon" :age 81}} {})
+  ;;
   )

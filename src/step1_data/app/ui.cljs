@@ -7,8 +7,7 @@
   (dom/li
    (dom/h5 (str name " (age: " age ")"))))
 
-(def ui-person (comp/factory Person))
-
+(def ui-person (comp/factory Person {:keyfn :person/name}))
 
 (defsc PersonList [this {:list/keys [label people]}]
   (dom/div
@@ -18,14 +17,13 @@
 
 (def ui-person-list (comp/factory PersonList))
 
-
 (defsc Root [this {:keys [ui/react-key]}]
-  (let [ui-data {:friends {:list/label "Friends" :list/people
-                           [{:person/name "Sally" :person/age 32}
-                            {:person/name "Brandon" :person/age 81}]}
-                 :enemies {:list/label "Enemies" :list/people
-                           [{:person/name "Fred" :person/age 11}
-                            {:person/name "Bobby" :person/age 55}]}}]
+  (let [ui-data {:friends {:list/label "Friends"
+                           :list/people [{:person/name "Sally" :person/age 32}
+                                         {:person/name "Brandon" :person/age 81}]}
+                 :enemies {:list/label "Enemies"
+                           :list/people [{:person/name "Fred" :person/age 11}
+                                         {:person/name "Bobby" :person/age 55}]}}]
     (dom/div
      (ui-person-list (:friends ui-data))
      (ui-person-list (:enemies ui-data)))))

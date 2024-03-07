@@ -9,8 +9,8 @@
                  (with-react18)))
 
 (comment
-  (-> APP 
+  (-> APP
       (::com.fulcrologic.fulcro.application/state-atom)
       deref)
-  
+  ;;
   )

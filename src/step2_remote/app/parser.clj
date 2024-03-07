@@ -5,16 +5,16 @@
    [com.wsscode.pathom.connect :as pc]
    [taoensso.timbre :as log]))
 
-(def resolvers [app.resolvers/resolvers])
+;(def resolvers [app.resolvers/resolvers])
 
 (def pathom-parser
-  (p/parser {::p/env     {::p/reader [p/map-reader
-                                      pc/reader2
-                                      pc/ident-reader
-                                      pc/index-reader]
-                          ::pc/mutation-join-globals [:tempids]}
+  (p/parser {::p/env {::p/reader [p/map-reader
+                                  pc/reader2
+                                  pc/ident-reader
+                                  pc/index-reader]
+                      ::pc/mutation-join-globals [:tempids]}
              ::p/mutate  pc/mutate
-             ::p/plugins [(pc/connect-plugin {::pc/register resolvers})
+             ::p/plugins [(pc/connect-plugin {::pc/register [app.resolvers/resolvers]})
                           p/error-handler-plugin
                           ;; or p/elide-special-outputs-plugin
                           (p/post-process-parser-plugin p/elide-not-found)]}))
