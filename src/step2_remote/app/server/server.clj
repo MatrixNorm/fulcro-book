@@ -1,6 +1,6 @@
-(ns app.server
+(ns app.server.server
   (:require
-   [app.parser :refer [api-parser]]
+   [app.server.parser :refer [api-parser]]
    [org.httpkit.server :as http]
    [com.fulcrologic.fulcro.server.api-middleware :as fulcro]
    [ring.middleware.content-type :refer [wrap-content-type]]

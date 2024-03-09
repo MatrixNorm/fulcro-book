@@ -1,6 +1,6 @@
 (ns user
   (:require
-   [app.server :as server]
+   [app.server.server :as server]
    [clojure.tools.namespace.repl :as tools-ns :refer [set-refresh-dirs refresh]]))
 
 ;; Ensure we only refresh the source we care about. This is important

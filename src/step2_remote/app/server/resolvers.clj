@@ -1,42 +1,27 @@
-(ns app.resolvers
+(ns app.server.resolvers
   (:require
-   [com.wsscode.pathom.connect :as pc]))
-
-(def people-table
-  (atom
-   {1 {:person/id 1 :person/name "Sally" :person/age 32}
-    2 {:person/id 2 :person/name "Joe" :person/age 22}
-    3 {:person/id 3 :person/name "Fred" :person/age 11}
-    4 {:person/id 4 :person/name "Bobby" :person/age 55}}))
-
-(def list-table
-  (atom
-   {:friends {:list/id     :friends
-              :list/label  "Friends"
-              :list/people [1 2]}
-    :enemies {:list/id     :enemies
-              :list/label  "Enemies"
-              :list/people [4 3]}}))
+   [com.wsscode.pathom.connect :as pc]
+   [app.server.database :as db]))
 
 ;; Given :person/id, this can generate the details of a person
 (pc/defresolver person-resolver [_ {:person/keys [id]}]
   {::pc/input  #{:person/id}
    ::pc/output [:person/name :person/age]}
-  (get @people-table id))
+  (get @db/people-table id))
 
 ;; Given a :list/id, this can generate a list label and the people
 ;; in that list (but just with their IDs)
 (pc/defresolver list-resolver [_ {:list/keys [id]}]
   {::pc/input  #{:list/id}
    ::pc/output [:list/label {:list/people [:person/id]}]}
-  (when-let [list (get @list-table id)]
+  (when-let [list (get @db/list-table id)]
     (assoc list
            :list/people (mapv (fn [id] {:person/id id}) (:list/people list)))))
 
 (comment
   (when-let [x false] "two more weeks")
   (when-let [x 2] [x :brandon])
-  (let [list (get list-table :friends)]
+  (let [list (get db/list-table :friends)]
     (assoc list
            :list/people (mapv (fn [id] {:person/id id}) (:list/people list))))
   ;;

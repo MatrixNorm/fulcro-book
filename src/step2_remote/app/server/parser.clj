@@ -1,12 +1,13 @@
-(ns app.parser
+(ns app.server.parser
   (:require
-   [app.resolvers]
-   [app.mutations]
+   [app.server.resolvers]
+   [app.server.mutations]
    [com.wsscode.pathom.core :as p]
    [com.wsscode.pathom.connect :as pc]
    [taoensso.timbre :as log]))
 
-(def resolvers [app.resolvers/resolvers app.mutations/mutations])
+(def resolvers [app.server.resolvers/resolvers
+                app.server.mutations/mutations])
 
 (def pathom-parser
   (p/parser {::p/env {::p/reader [p/map-reader

@@ -11,4 +11,8 @@
           (swap! state merge/remove-ident*
                  [:person/id person-id]
                  [:list/id list-id :list/people]))
+  ;; Remote will recieve (app.mutations/delete-person ...)
+  ;; This must be equal to the value of ::pc/sym on the server side.
+  ;; XXX is where a way to override default namespace for
+  ;; the mutations symbol?
   (remote [env] true))
