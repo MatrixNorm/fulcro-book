@@ -2,6 +2,10 @@
   (:require
    [app.application :refer [APP]]
    [app.ui :as ui]
+   ;; если не включить строку ниже, то при eval playground будет
+   ;; ошибки при (def x ...), если импортится макрос.
+   ;; XXX спросить умников что происходит
+   ;;[app.playground] 
    [com.fulcrologic.fulcro.components :as comp]
    [com.fulcrologic.fulcro.application :as appl]
    [com.fulcrologic.fulcro.data-fetch :as df]))

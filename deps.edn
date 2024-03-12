@@ -13,8 +13,10 @@
            ring/ring-core         {:mvn/version "1.11.0"}
            http-kit/http-kit      {:mvn/version "2.7.0"}}
 
- :aliases {:dev {:extra-paths ["dev"]
-                 :extra-deps  {org.clojure/clojurescript   {:mvn/version "1.11.121"}
+ :aliases {:dev {;:extra-paths ["dev"]
+                 :jvm-opts ["-Xmx1G"] ; may help from JVM crashes ???
+                 :extra-deps  {;org.clojure/clojurescript   {:mvn/version "1.11.121"}
+                               ; shadow-cljs delivers own version of clojurescript
                                thheller/shadow-cljs        {:mvn/version "2.26.4"}
                                binaryage/devtools          {:mvn/version  "1.0.7"}
                                cider/cider-nrepl           {:mvn/version "0.44.0"}
