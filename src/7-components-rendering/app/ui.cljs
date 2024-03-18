@@ -20,18 +20,27 @@
                              {:keyfn :person/id}))
 
 (defsc PersonList [this {:list/keys [items]}]
-  (let [all-checked? (if (empty? items)
-                       false
-                       (every? :ui/checked? items))]
-    (dom/ul
-     (dom/li
-      (dom/input {:type "checkbox"
-                  :checked all-checked?
-                  :onChange #(if all-checked?
-                               (comp/transact! this [(api/uncheck-all {:list-id :root/people})])
-                               (comp/transact! this [(api/check-all {:list-id :root/people})]))})
-      (dom/label "select all"))
-     (mapv ui-person items))))
+  (let [total-number (count items)
+        checked-number (count (filter :ui/checked? items))
+        ;; `checked-number` is calculated whenever any checkbox is
+        ;; checked. Can this be a problem when `items` is large?
+        all-checked? (and (< 0 total-number )
+                          (= checked-number total-number))]
+    (dom/div
+     (dom/div
+      (dom/span (str checked-number " Selected"))
+      (if (< 0 checked-number)
+        (dom/button {:onClick #(println "delete golems")} "Delete")
+        nil))
+     (dom/ul
+      (dom/li
+       (dom/input {:type "checkbox"
+                   :checked all-checked?
+                   :onChange #(if all-checked?
+                                (comp/transact! this [(api/uncheck-all {:list-id :root/people})])
+                                (comp/transact! this [(api/check-all {:list-id :root/people})]))})
+       (dom/label "select all"))
+      (mapv ui-person items)))))
 
 (def ui-person-list (comp/factory PersonList))
 
