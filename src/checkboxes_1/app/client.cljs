@@ -7,12 +7,12 @@
    [com.fulcrologic.fulcro.algorithms.merge :as merge]))
 
 (def initial-data-tree
-  {:root/people
+  {:root/buddies
    [{:person/id 1 :person/name "Joe"
      :person/surname "Brandon"}
     {:person/id 2 :person/name "Dotard"
      :person/surname "Dump"}
-    {:person/id 3 :person/name "Banach"
+    {:person/id 3 :person/name "Osama"
      :person/surname "Obongo"}
     {:person/id 4 :person/name "Shilary"
      :person/surname "Kliptor"}
