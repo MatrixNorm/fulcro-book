@@ -21,6 +21,11 @@
 (defmutation toggle
   [{:keys [list-id person-id]}]
   (action [{:keys [state]}]
-          (swap! state update-in [:list/id list-id :ui/checked-map person-id] not)))
+          (let [checked-set (get-in @state [:list/id list-id :ui/checked-set] #{})
+                new-checked-set (if (contains? checked-set person-id)
+                                  (disj checked-set person-id)
+                                  (conj checked-set person-id))]
+            (println checked-set new-checked-set)
+            (swap! state assoc-in [:list/id list-id :ui/checked-set] new-checked-set))))
 
 

@@ -21,20 +21,20 @@
 
 (defsc PersonList [this {:list/keys [id people] :as params}]
   {:query [:list/id {:list/people (comp/get-query Person)}
-           :ui/checked-map]
+           :ui/checked-set]
    :ident :list/id}
-  (let [checked-map (:ui/checked-map params)
+  (let [checked-set (:ui/checked-set params)
         total-number (count people)
-        checked-number (count checked-map)
+        checked-number (count checked-set)
         all-checked? (and (< 0 total-number)
                           (= checked-number total-number))
         uncheck-all #(comp/transact! this
-                                     [(api/uncheck-all {:list/id id})])
+                                     [(api/uncheck-all {:list-id id})])
         check-all #(comp/transact! this
-                                   [(api/check-all {:list/id id})])
+                                   [(api/check-all {:list-id id})])
         on-change (if all-checked? uncheck-all check-all)
         person->react-elem (fn [person] (ui-person (comp/computed person {:containing-list-id id
-                                                                          :checked? (get checked-map (:person/id person))})))]
+                                                                          :checked? (contains? checked-set (:person/id person))})))]
     (dom/div
      (dom/div
       (dom/span (str checked-number " Selected"))
