@@ -32,20 +32,20 @@
                                      [(api/uncheck-all {:list-id id})])
         check-all #(comp/transact! this
                                    [(api/check-all {:list-id id})])
-        on-change (if all-checked? uncheck-all check-all)
         person->react-elem (fn [person] (ui-person (comp/computed person {:containing-list-id id
-                                                                          :checked? (contains? checked-set (:person/id person))})))]
+                                                                          :checked? (contains? checked-set (:person/id person))})))
+        on-delete #(comp/transact! this [(api/delete-checked-items-from-list {:list-id id})])]
     (dom/div
      (dom/div
       (dom/span (str checked-number " Selected"))
       (if (< 0 checked-number)
-        (dom/button {:onClick #(println "delete buddy")} "Delete")
+        (dom/button {:onClick on-delete} "Delete")
         nil))
      (dom/ul
       (dom/li
        (dom/input {:type "checkbox"
                    :checked all-checked?
-                   :onChange on-change})
+                   :onChange (if all-checked? uncheck-all check-all)})
        (dom/label "select all"))
       (mapv person->react-elem people)))))
 
