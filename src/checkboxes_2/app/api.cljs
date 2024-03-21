@@ -1,5 +1,7 @@
 (ns app.api
-  (:require [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]))
+  (:require
+   [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]
+   [com.fulcrologic.fulcro.algorithms.merge :as merge]))
 
 (defmutation check-all
   [{:keys [list-id]}]
@@ -24,7 +26,9 @@
             (swap! state assoc-in [:list/id list-id :ui/checked-set] new-checked-set))))
 
 (defmutation delete-checked-items-from-list
-  [{:keys [list-id person-id]}]
+  [{:keys [list-id]}]
   (action [{:keys [state]}]
-          (let [x 1]
-            (println list-id (get-in @state [:list/id list-id :ui/checked-set])))))
+          (let [checked-ids (get-in @state [:list/id list-id :ui/checked-set])
+                new-list-fn (fn [old-list]
+                              (vec (filter #(not (contains? checked-ids (second %))) old-list)))]
+            (swap! state update-in [:list/id list-id :list/people] new-list-fn))))
