@@ -5,8 +5,8 @@
 (defmutation check-all
   [{:keys [list-id]}]
   (action [{:keys [state]}]
-          (let [all-person-ids (get-in @state [:list/id list-id :list/people])
-                new-checked-set (set (map second all-person-ids))]
+          (let [all-items-ids (get-in @state [:list/id list-id :list/items])
+                new-checked-set (set (map second all-items-ids))]
             (swap! state assoc-in [:list/id list-id :ui/checked-set] new-checked-set))))
 
 (defmutation uncheck-all
@@ -15,12 +15,12 @@
           (swap! state assoc-in [:list/id list-id :ui/checked-set] #{})))
 
 (defmutation toggle
-  [{:keys [list-id person-id]}]
+  [{:keys [list-id item-id]}]
   (action [{:keys [state]}]
           (let [checked-set (get-in @state [:list/id list-id :ui/checked-set] #{})
-                new-checked-set (if (contains? checked-set person-id)
-                                  (disj checked-set person-id)
-                                  (conj checked-set person-id))]
+                new-checked-set (if (contains? checked-set item-id)
+                                  (disj checked-set item-id)
+                                  (conj checked-set item-id))]
             (println checked-set new-checked-set)
             (swap! state assoc-in [:list/id list-id :ui/checked-set] new-checked-set))))
 
