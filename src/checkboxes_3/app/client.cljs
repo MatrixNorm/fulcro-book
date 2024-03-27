@@ -13,7 +13,7 @@
               {:person/id 3 :person/age 60
                :person/name "Bardak" :person/surname "Obmana"}
               {:person/id 4 :person/age 74
-               :person/name "Bill" :person/surname "Kliptor"}
+               :person/name "Bill" :person/surname "Levinsky"}
               {:person/id 5 :person/age 51
                :person/name "Crack" :person/surname "Hunter"}])
 
